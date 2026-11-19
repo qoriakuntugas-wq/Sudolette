@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudolette</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #f8f4ee;
+  color: #514b59;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 22px;
+}
+
+header h1 {
+  margin: 0;
+  color: #8d79a8;
+  font-size: 32px;
+}
+
+header p {
+  color: #99909e;
+}
+
+.game {
+  max-width: 470px;
+  margin: auto;
+  padding: 12px;
+}
+
+.panel {
+  background: white;
+  border-radius: 18px;
+  padding: 15px;
+  box-shadow: 0 4px 15px #0000000a;
+  margin-bottom: 14px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.info select {
+  border: 1px solid #ddd2e8;
+  border-radius: 9px;
+  padding: 9px;
+  color: #665477;
+  background: #faf7fc;
+}
+
+#timer {
+  font-weight: bold;
+  color: #907ba9;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  border: 2px solid #9582a9;
+  margin: 12px auto;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.cell {
+  min-width: 0;
+  border: 0;
+  border-right: 1px solid #ddd6e5;
+  border-bottom: 1px solid #ddd6e5;
+  border-radius: 0;
+  background: white;
+  color: #675581;
+  font-size: clamp(15px, 4.5vw, 23px);
+  padding: 0;
+  font-weight: 500;
+}
+
+.cell:nth-child(3n) {
+  border-right: 3px solid #806994;
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+  border-bottom: 3px solid #806994;
+}
+
+.cell.fixed {
+  background: #f0ebf5;
+  font-weight: bold;
+  color: #51445e;
+}
+
+.cell.selected {
+  background: #e5d8f3;
+}
+
+.cell.related {
+  background: #f6f1fa;
+}
+
+.cell.same {
+  background: #e6d9f4;
+  color: #7954a0;
+  font-weight: bold;
+}
+
+.cell.error {
+  background: #ffe1e1;
+  color: #d05d65;
+}
+
+.cell:focus-visible {
+  outline: 2px solid #9275b6;
+  outline-offset: -2px;
+}
+
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.num {
+  padding: 13px 0;
+  background: #eee7f5;
+  color: #735c90;
+  font-size: 18px;
+}
+
+.num:disabled {
+  opacity: .3;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.action {
+  background: #f3edf7;
+  color: #79648f;
+  font-size: 13px;
+  padding: 12px 5px;
+}
+
+.primary {
+  background: #a48abd;
+  color: white;
+}
+
+#message {
+  text-align: center;
+  color: #9176aa;
+  min-height: 22px;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  color: #aaa0ac;
+  padding: 15px;
+  font-size: 12px;
+}
+
+@media(max-width: 360px) {
+  .cell { font-size: 14px; }
+  .num { font-size: 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Sudolette</h1>
+  <p>A little puzzle for your mind.</p>
+</header>
+
+<main class="game">
+
+  <section class="panel">
+    <div class="info">
+      <select id="level" onchange="newGame()">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <div>⏱ <span id="timer">00:00</span></div>
+
+      <button class="primary" onclick="newGame()">New Game</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div id="board"></div>
+
+    <div class="numbers" id="numbers"></div>
+
+    <div class="actions">
+      <button class="action" onclick="eraseCell()">⌫ Erase</button>
+      <button class="action" onclick="toggleNotes()">✎ Notes</button>
+      <button class="action" onclick="hint()">💡 Hint</button>
+      <button class="action" onclick="checkGame()">✓ Check</button>
+      <button class="action" onclick="undo()">↶ Undo</button>
+      <button class="action" onclick="solveGame()">☼ Solve</button>
+    </div>
+
+    <div id="message">Choose a cell and start playing! ♡</div>
+  </section>
+
+</main>
+
+<footer>Sudoku Bloom • Think, focus, and bloom 🌷</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
